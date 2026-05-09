@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Data
+data/
+dataset/
+
+# Model weights
+*.pth
+*.pt
+*.h5
+
+# Env
+venv/
+.env
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+wandb/
+runs/
+logs/
+
+# Video output
+*.mp4
+*.avi
+*.mov
