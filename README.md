@@ -22,7 +22,14 @@ hw2/
 │       ├── dataset.py                 # 102 Flower 数据集加载
 │       └── train_utils.py             # 训练/验证循环
 │
-├── task2_detection/                   # 任务2：目标检测与跟踪（待完成）
+├── task2_car/                         # 任务2：目标检测与跟踪
+│   ├── report.md                      # 任务2实验报告
+│   ├── config.yaml                    # 训练/跟踪配置
+│   ├── train_yolov8.py                # 训练脚本
+│   ├── track_and_count.py             # 跟踪与越线计数
+│   ├── export_frames.py               # 导出指定帧
+│   ├── download_dataset.py            # 数据集下载
+│   └── utils.py                       # 公共工具函数
 └── task3_unet/                        # 任务3：U-Net 语义分割（待完成）
 ```
 
