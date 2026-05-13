@@ -100,7 +100,46 @@ python train.py --all
 
 ---
 
-## 任务2: 场景目标检测与视频多目标跟踪（TODO）
+## 任务2: 场景目标检测与视频多目标跟踪
+
+本任务在 [task2_car/](task2_car/) 目录下完成，使用 YOLOv8 进行车辆检测与跟踪，并实现越线计数与遮挡分析。
+
+### 数据集
+
+- Road Vehicle Images Dataset（Kaggle）
+- 数据组织（YOLO 格式）：
+
+```
+<dataset_dir>/
+	images/
+		train/
+		val/
+	labels/
+		train/
+		val/
+```
+
+### 训练与推理
+
+```bash
+cd task2_car
+
+# 训练
+python train_yolov8.py --config config.yaml
+
+# 跟踪 + 越线计数
+python track_and_count.py --config config.yaml
+```
+
+### 主要功能
+
+- YOLOv8 车辆检测 + ByteTrack 跟踪（稳定 ID）
+- 虚拟线越线计数（基于中心点符号变化）
+- 遮挡片段帧导出（用于 ID 跳变分析）
+
+### 结果与说明
+
+- 训练与验证曲线、PR 曲线、混淆矩阵等结果见 [task2_car/report.md](task2_car/report.md)
 
 ## 任务3: U-Net 从零搭建与损失函数工程（TODO）
 
