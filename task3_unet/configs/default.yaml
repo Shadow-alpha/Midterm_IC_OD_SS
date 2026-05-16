@@ -1,0 +1,28 @@
+seed: 3724
+
+data:
+  root: data/iccv09Data
+  image_size: [256, 320]
+  num_classes: 8
+  ignore_index: 255
+  val_ratio: 0.2
+  num_workers: 4
+
+model:
+  in_channels: 3
+  base_channels: 64
+
+train:
+  epochs: 100
+  batch_size: 8
+  learning_rate: 0.0002
+  weight_decay: 0.0001
+  loss: ce
+  device: auto
+  amp: true
+  save_dir: checkpoints
+  log_dir: runs
+
+logging:
+  use_wandb: true
+  project: task3-unet-stanford-background
