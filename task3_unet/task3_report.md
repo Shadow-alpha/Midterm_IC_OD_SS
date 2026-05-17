@@ -1,5 +1,9 @@
 # Task 3: U-Net 语义分割实验报告
 
+训练好的模型权重已上传至 Google Drive：
+
+[https://drive.google.com/drive/folders/1N-PM_CHWxI2TDCYQhyB60lIGux_-c4qI?usp=sharing](https://drive.google.com/drive/folders/1N-PM_CHWxI2TDCYQhyB60lIGux_-c4qI?usp=sharing)
+
 ## 1. 任务
 
 本任务要求从零搭建 U-Net 语义分割网络，并在 Stanford Background Dataset 上进行训练与验证。实验核心目标包括：
