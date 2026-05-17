@@ -65,6 +65,22 @@ Useful overrides:
 python train.py --data-root data/iccv09Data --epochs 80 --batch-size 8 --lr 1e-4 --loss ce_dice
 ```
 
+For mixed CE + Dice loss, override the two weights from command line:
+
+```bash
+python train.py --loss ce_dice --ce-weight 1.0 --dice-weight 0.5
+python train.py --loss ce_dice --ce-weight 0.5 --dice-weight 1.0
+```
+
+Mixed-loss checkpoints and logs include the weights in their folder/run names,
+for example:
+
+```text
+checkpoints/ce_dice_ce1_dice0p5/best.pt
+runs/ce_dice_ce1_dice0p5/metrics.csv
+wandb run name: unet-ce_dice_ce1_dice0p5
+```
+
 Default hyperparameters:
 
 ```text
@@ -74,6 +90,8 @@ optimizer: AdamW
 epochs: 50
 image size: 256 x 320
 loss function: ce / dice / ce_dice
+ce_weight: 0.5
+dice_weight: 0.5
 metric: pixel accuracy, mIoU
 ```
 

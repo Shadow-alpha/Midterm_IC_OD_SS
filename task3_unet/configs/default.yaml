@@ -18,6 +18,8 @@ train:
   learning_rate: 0.0002
   weight_decay: 0.0001
   loss: ce
+  ce_weight: 0.5
+  dice_weight: 0.5
   device: auto
   amp: true
   save_dir: checkpoints

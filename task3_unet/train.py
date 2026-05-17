@@ -22,6 +22,19 @@ def print_config(cfg: dict, indent: int = 0) -> None:
             print(f"{prefix}{key}: {value}")
 
 
+def format_weight(value: float) -> str:
+    return f"{value:g}".replace(".", "p")
+
+
+def build_run_name(cfg: dict) -> str:
+    loss_name = cfg["train"]["loss"]
+    if loss_name == "ce_dice":
+        ce_weight = format_weight(cfg["train"]["ce_weight"])
+        dice_weight = format_weight(cfg["train"]["dice_weight"])
+        return f"{loss_name}_ce{ce_weight}_dice{dice_weight}"
+    return loss_name
+
+
 def train_one_epoch(
     model: torch.nn.Module,
     loader: torch.utils.data.DataLoader,
@@ -89,6 +102,8 @@ def main() -> None:
     parser.add_argument("--epochs", type=int, default=None, help="Override training epochs.")
     parser.add_argument("--batch-size", type=int, default=None, help="Override batch size.")
     parser.add_argument("--lr", type=float, default=None, help="Override learning rate.")
+    parser.add_argument("--ce-weight", type=float, default=None, help="CE weight for ce_dice loss.")
+    parser.add_argument("--dice-weight", type=float, default=None, help="Dice weight for ce_dice loss.")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -102,6 +117,10 @@ def main() -> None:
         cfg["train"]["batch_size"] = args.batch_size
     if args.lr is not None:
         cfg["train"]["learning_rate"] = args.lr
+    if args.ce_weight is not None:
+        cfg["train"]["ce_weight"] = args.ce_weight
+    if args.dice_weight is not None:
+        cfg["train"]["dice_weight"] = args.dice_weight
 
     set_seed(cfg["seed"])
     device = get_device(cfg["train"]["device"])
@@ -131,6 +150,8 @@ def main() -> None:
         cfg["train"]["loss"],
         num_classes=cfg["data"]["num_classes"],
         ignore_index=cfg["data"]["ignore_index"],
+        ce_weight=cfg["train"]["ce_weight"],
+        dice_weight=cfg["train"]["dice_weight"],
     )
     optimizer = torch.optim.AdamW(
         model.parameters(),
@@ -140,8 +161,9 @@ def main() -> None:
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=cfg["train"]["epochs"])
     scaler = GradScaler(enabled=use_amp)
 
-    save_dir = Path(cfg["train"]["save_dir"]) / cfg["train"]["loss"]
-    log_dir = Path(cfg["train"]["log_dir"]) / cfg["train"]["loss"]
+    run_name = build_run_name(cfg)
+    save_dir = Path(cfg["train"]["save_dir"]) / run_name
+    log_dir = Path(cfg["train"]["log_dir"]) / run_name
     save_dir.mkdir(parents=True, exist_ok=True)
     logger = CSVLogger(
         log_dir / "metrics.csv",
@@ -163,7 +185,7 @@ def main() -> None:
 
         wandb_run = wandb.init(
             project=cfg["logging"]["project"],
-            name=f"unet-{cfg['train']['loss']}",
+            name=f"unet-{run_name}",
             config=cfg,
         )
 

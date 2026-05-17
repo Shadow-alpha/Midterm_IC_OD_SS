@@ -35,8 +35,8 @@ class CombinedLoss(nn.Module):
         self,
         num_classes: int,
         ignore_index: int = 255,
-        ce_weight: float = 1.0,
-        dice_weight: float = 1.0,
+        ce_weight: float = 0.5,
+        dice_weight: float = 0.5,
     ) -> None:
         super().__init__()
         self.ce = nn.CrossEntropyLoss(ignore_index=ignore_index)
@@ -48,12 +48,23 @@ class CombinedLoss(nn.Module):
         return self.ce_weight * self.ce(logits, targets) + self.dice_weight * self.dice(logits, targets)
 
 
-def build_loss(name: str, num_classes: int, ignore_index: int = 255) -> nn.Module:
+def build_loss(
+    name: str,
+    num_classes: int,
+    ignore_index: int = 255,
+    ce_weight: float = 0.5,
+    dice_weight: float = 0.5,
+) -> nn.Module:
     name = name.lower()
     if name in {"ce", "cross_entropy", "cross-entropy"}:
         return nn.CrossEntropyLoss(ignore_index=ignore_index)
     if name == "dice":
         return DiceLoss(num_classes=num_classes, ignore_index=ignore_index)
     if name in {"ce_dice", "combined", "cross_entropy_dice"}:
-        return CombinedLoss(num_classes=num_classes, ignore_index=ignore_index)
+        return CombinedLoss(
+            num_classes=num_classes,
+            ignore_index=ignore_index,
+            ce_weight=ce_weight,
+            dice_weight=dice_weight,
+        )
     raise ValueError(f"Unsupported loss: {name}")
