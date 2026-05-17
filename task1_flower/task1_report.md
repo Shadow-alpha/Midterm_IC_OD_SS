@@ -224,9 +224,11 @@
 
 ![所有实验对比](comparison_all.png)
 
-#### Wandb 中查看所有实验
+#### Wandb 训练曲线
 
-![image-20260509110538530](/Users/stein/Library/Application Support/typora-user-images/image-20260509110538530.png)
+**训练集/验证集 Loss & Accuracy 对比**：
+
+![Wandb 训练曲线](task1_wandb.png)
 
 ### 3.2 最终排名
 
@@ -260,3 +262,18 @@
 3. **网络深度**: ResNet-34 取得最佳测试准确率 97.88%，但参数量翻倍、速度慢 30%
 
 最终推荐方案：**SE-ResNet-18** 在精度（97.64%）与效率（11.3M 参数）之间取得最佳平衡。
+
+---
+
+## 5. 模型权重下载
+
+所有训练好的模型权重（.pth）已上传至 Google Drive：
+
+**下载链接**: [Task 1 Model Checkpoints](https://drive.google.com/drive/folders/1XF57BAXe9MUAzNUgudhMIID1v_0j_BVx?usp=drive_link)
+
+包含以下模型权重：
+- `baseline_r18_best.pth` - ResNet-18 基线模型（Test Acc: 97.23%）
+- `baseline_r34_best.pth` - ResNet-34 基线模型（Test Acc: 97.88%）
+- `se_resnet18_best.pth` - SE-ResNet-18 模型（Test Acc: 97.64%）🥈
+- `cbam_resnet18_best.pth` - CBAM-ResNet-18 模型（Test Acc: 95.12%）
+- `random_init_best.pth` - 随机初始化 ResNet-18（Test Acc: 75.35%）
