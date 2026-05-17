@@ -136,6 +136,8 @@ L = ce_weight * L_ce + dice_weight * L_dice
 
 实验超参数如下：
 
+| 参数 | 数值 |
+| --- | ---: |
 | Input size | 256 x 320 |
 | Num classes | 8 |
 | Optimizer | AdamW |
