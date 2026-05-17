@@ -52,8 +52,6 @@ mean = (0.485, 0.456, 0.406)
 std = (0.229, 0.224, 0.225)
 ```
 
-图像与标签通过文件名 stem 配对。例如 `images/0000047.jpg` 与 `labels/0000047.regions.txt` 配对。
-
 ## 3. 模型结构与损失函数
 
 ### 3.1 U-Net 模型结构
@@ -103,13 +101,7 @@ ConvTranspose2d -> Skip Connection concat -> DoubleConv
 
 ### 3.2 Cross-Entropy Loss
 
-Cross-Entropy Loss 对每个有效像素进行多分类监督：
-
-```text
-L_ce = CE(logits, target)
-```
-
-该损失直接优化逐像素分类正确性，训练稳定，是多分类语义分割中的常用基线。
+Cross-Entropy Loss 对每个有效像素进行多分类监督。该损失直接优化逐像素分类正确性，训练稳定，是多分类语义分割中的常用基线。
 
 ### 3.3 Dice Loss
 
@@ -142,13 +134,8 @@ L = ce_weight * L_ce + dice_weight * L_dice
 
 ## 4. 实验设置
 
-训练配置如下：
+实验超参数如下：
 
-| 项目 | 设置 |
-| --- | --- |
-| Framework | PyTorch |
-| Model | U-Net |
-| Dataset | Stanford Background Dataset |
 | Input size | 256 x 320 |
 | Num classes | 8 |
 | Optimizer | AdamW |
@@ -157,8 +144,6 @@ L = ce_weight * L_ce + dice_weight * L_dice
 | Batch size | 8 |
 | Learning rate | 0.0002 |
 | Weight decay | 0.0001 |
-| Mixed precision | Enabled |
-| Logging | WandB + local CSV |
 
 每个 epoch 记录以下指标：
 
