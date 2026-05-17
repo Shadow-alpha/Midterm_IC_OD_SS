@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find /Users/stein/Desktop/HWs/deeplearning/hw2/ -maxdepth 2 -type f | head -80)"
+    ]
+  }
+}

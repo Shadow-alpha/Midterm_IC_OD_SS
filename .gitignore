@@ -23,7 +23,7 @@ dataset/
 venv/
 .env
 .venv/
-
+.qoder
 # IDE
 .idea/
 .vscode/
