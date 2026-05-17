@@ -28,63 +28,31 @@
 | 测试集 | 1,229 | 15% |
 | **合计** | **8,189** | **100%** |
 
-**数据集特点**：
-- 102 个花卉类别，每类 40-258 张图像不等
-- 图像分辨率不一，统一 resize/crop 到 224×224
-- 类别间差异小（细粒度分类），类内差异大（姿态、光照变化）
-
-### 1.3 网络结构
-
-**Baseline 模型**：
-
-| 模型 | 结构 | 参数量 | 特点 |
-|------|------|--------|------|
-| ResNet-18 | 18 层（4个stage，每层2个BasicBlock） | 11.2M | 浅层网络，推理速度快 |
-| ResNet-34 | 34 层（4个stage，第2-4层各3个BasicBlock） | 21.3M | 更深，特征表达能力更强 |
-
-**BasicBlock 结构**（ResNet-18/34 基础单元）：
-```
-Conv3×3 (64 filters) → BN → ReLU → Conv3×3 → BN → (+ Identity) → ReLU
-```
-
-**改进模型**：
-- **SE-ResNet-18**：在 BasicBlock 后插入 Squeeze-and-Excitation 模块（参数量 +0.1M）
-- **CBAM-ResNet-18**：在 BasicBlock 后插入 CBAM 模块（通道注意力 + 空间注意力，参数量 +0.1M）
-
-**分类头修改**：将 ResNet 原始全连接层（1000 类）替换为 102 类输出：
-```python
-model.fc = nn.Linear(512, 102)  # ResNet-18 最后一层特征维度为 512
-```
-
-### 1.4 通用配置
+### 1.3 通用配置
 
 | 参数 | 值 |
 |------|-----|
-| **损失函数** | CrossEntropyLoss（交叉熵损失） |
-| **优化器** | AdamW (weight_decay=1e-4) |
-| **学习率调度器** | CosineAnnealingLR（余弦退火） |
-| **Batch Size** | 32 |
-| **Epochs** | 30（基线实验） |
-| **Iterations** | 每 epoch 约 179 iterations（5732/32≈179） |
-| **图像尺寸** | 224×224 |
-| **评价指标** | Top-1 Accuracy（分类准确率） |
-| **数据增强 (训练)** | RandomResizedCrop(224), RandomHorizontalFlip(), ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1) |
-| **数据增强 (验证/测试)** | Resize(256), CenterCrop(224) |
-| **数据归一化** | ImageNet 均值 [0.485, 0.456, 0.406]，标准差 [0.229, 0.224, 0.225] |
+| 优化器 | AdamW (weight_decay=1e-4) |
+| 学习率调度器 | CosineAnnealingLR |
+| Batch Size | 32 |
+| Epochs | 30 |
+| 图像尺寸 | 224×224 |
+| 数据增强 (训练) | RandomResizedCrop, RandomHorizontalFlip, ColorJitter |
+| 数据增强 (验证/测试) | Resize(256), CenterCrop(224) |
 
-### 1.5 实验矩阵
+### 1.4 实验矩阵
 
-| # | 实验名称 | 模型 | 初始化 | Head LR | Backbone LR | Epochs | 目的 |
-|---|---------|------|--------|---------|-------------|--------|------|
-| 1 | baseline_r18 | ResNet-18 | ImageNet | 1e-3 | 1e-5 | 30 | 主基线 |
-| 2 | baseline_r34 | ResNet-34 | ImageNet | 1e-3 | 1e-5 | 30 | 深度对比 |
-| 3 | random_init | ResNet-18 | Random | 1e-3 | 1e-3 | 30 | 预训练消融 |
-| 4 | se_resnet18 | ResNet-18+SE | ImageNet | 1e-3 | 1e-5 | 30 | 通道注意力 |
-| 5 | cbam_resnet18 | ResNet-18+CBAM | ImageNet | 1e-3 | 1e-5 | 30 | 空间+通道注意力 |
-| 6 | epochs_15 | ResNet-18 | ImageNet | 1e-3 | 1e-5 | 15 | 短训练 |
-| 7 | epochs_50 | ResNet-18 | ImageNet | 1e-3 | 1e-5 | 50 | 长训练 |
-| 8 | lr_high | ResNet-18 | ImageNet | 1e-2 | 1e-4 | 30 | 高学习率 |
-| 9 | lr_low | ResNet-18 | ImageNet | 1e-4 | 1e-6 | 30 | 低学习率 |
+| # | 实验名称 | 模型 | 初始化 | Head LR | Backbone LR | 目的 |
+|---|---------|------|--------|---------|-------------|------|
+| 1 | baseline_r18 | ResNet-18 | ImageNet | 1e-3 | 1e-5 | 主基线 |
+| 2 | baseline_r34 | ResNet-34 | ImageNet | 1e-3 | 1e-5 | 深度对比 |
+| 3 | random_init | ResNet-18 | Random | 1e-3 | 1e-3 | 预训练消融 |
+| 4 | se_resnet18 | ResNet-18+SE | ImageNet | 1e-3 | 1e-5 | 通道注意力 |
+| 5 | cbam_resnet18 | ResNet-18+CBAM | ImageNet | 1e-3 | 1e-5 | 空间+通道注意力 |
+| 6 | epochs_15 | ResNet-18 | ImageNet | 1e-3 | 1e-5 | 短训练 |
+| 7 | epochs_50 | ResNet-18 | ImageNet | 1e-3 | 1e-5 | 长训练 |
+| 8 | lr_high | ResNet-18 | ImageNet | 1e-2 | 1e-4 | 高学习率 |
+| 9 | lr_low | ResNet-18 | ImageNet | 1e-4 | 1e-6 | 低学习率 |
 
 ---
 
@@ -254,13 +222,11 @@ model.fc = nn.Linear(512, 102)  # ResNet-18 最后一层特征维度为 512
 
 ### 3.1 所有实验对比曲线
 
-**训练集 Loss & 验证集 Accuracy 对比**：
-
 ![所有实验对比](comparison_all.png)
 
-**Wandb 训练日志截图**：
+#### Wandb 中查看所有实验
 
-> 注：所有实验的训练曲线已上传至 Wandb，可在 Wandb Dashboard 中查看详细的训练/验证 Loss、Accuracy 曲线以及学习率变化。
+![image-20260509110538530](/Users/stein/Library/Application Support/typora-user-images/image-20260509110538530.png)
 
 ### 3.2 最终排名
 

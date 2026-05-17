@@ -3,7 +3,9 @@ torchvision>=0.15.0
 wandb
 opencv-python
 numpy
+pyyaml
 matplotlib
 pillow
 scipy
 tqdm
+ultralytics>=8.1.0

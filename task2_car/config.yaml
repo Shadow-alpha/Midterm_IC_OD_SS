@@ -1,0 +1,63 @@
+dataset:
+  dataset_dir: /home/zhangtianyi/homework/Midterm_IC_OD_SS/task2/trafic_data
+  train_images: images/train
+  train_labels: labels/train
+  val_images: images/val
+  val_labels: labels/val
+  class_names:
+    - ambulance
+    - army vehicle
+    - auto rickshaw
+    - bicycle
+    - bus
+    - car
+    - garbagevan
+    - human hauler
+    - minibus
+    - minivan
+    - motorbike
+    - pickup
+    - policecar
+    - rickshaw
+    - scooter
+    - suv
+    - taxi
+    - three wheelers -CNG-
+    - truck
+    - van
+    - wheelbarrow
+
+train:
+  enabled: true
+  model: yolov8n.pt
+  device: 7
+  epochs: 100
+  batch: 64
+  img_size: 640
+  lr0: 0.001
+  weight_decay: 0.0005
+  output_dir: runs/task2
+
+track:
+  model_path: /home/zhangtianyi/homework/Midterm_IC_OD_SS/task2/runs/detect/runs/task2/train/weights/best.pt
+  device: 7
+  video_path: /home/zhangtianyi/homework/Midterm_IC_OD_SS/task2/car_flow.mp4
+  output_dir: outputs
+  conf: 0.25
+  iou: 0.7
+  imgsz: 640
+  tracker: bytetrack.yaml
+  show: false
+
+counting:
+  line_start: [650, 200]
+  line_end: [650, 1075]
+  line_color: [0, 255, 255]
+  text_color: [255, 255, 255]
+  line_thickness: 2
+  font_scale: 0.7
+
+analysis:
+  save_frames: true
+  debug_frames: [468, 469, 470, 471]
+  save_all_frames: false

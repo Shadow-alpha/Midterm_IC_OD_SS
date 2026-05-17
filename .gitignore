@@ -9,11 +9,15 @@ build/
 # Data
 data/
 dataset/
+*data/
 
 # Model weights
 *.pth
 *.pt
 *.h5
+
+# Outputs
+/task2_car/outputs
 
 # Env
 venv/
@@ -38,3 +42,9 @@ logs/
 *.mp4
 *.avi
 *.mov
+*.jpg
+
+# Documents
+作业要求.md
+/task2_car/README.md
+/task2_car/assets/
