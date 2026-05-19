@@ -86,11 +86,11 @@ ConvTranspose2d -> Skip Connection concat -> DoubleConv
 | 阶段 | 输出尺寸 |
 | --- | --- |
 | Input | `[B, 3, 256, 320]` |
-| Encoder 1 | `[B, 64, 256, 320]` |
-| Encoder 2 | `[B, 128, 128, 160]` |
-| Encoder 3 | `[B, 256, 64, 80]` |
-| Encoder 4 | `[B, 512, 32, 40]` |
-| Bottleneck | `[B, 1024, 16, 20]` |
+| DoubleConv | `[B, 64, 256, 320]` |
+| Encoder 1 | `[B, 128, 128, 160]` |
+| Encoder 2 | `[B, 256, 64, 80]` |
+| Encoder 3 | `[B, 512, 32, 40]` |
+| Encoder 4 | `[B, 1024, 16, 20]` |
 | Decoder 1 | `[B, 512, 32, 40]` |
 | Decoder 2 | `[B, 256, 64, 80]` |
 | Decoder 3 | `[B, 128, 128, 160]` |
